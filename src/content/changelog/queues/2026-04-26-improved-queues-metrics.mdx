@@ -10,7 +10,9 @@ You can now access realtime backlog size (in count & bytes) and `oldest_message_
 
 ### REST API
 
-To access metrics via the REST API, use the new `metrics` endpoint: `/accounts/{account_id}/queues/{queue_id}/metrics` which returns `backlog_lag`, `backlog_count`, and `oldest_message_timestamp`.
+To access metrics via the REST API, use the new `metrics` endpoint: `/accounts/{account_id}/queues/{queue_id}/metrics` which returns `backlog_count`, `backlog_bytes` and `oldest_message_timestamp_ms`.
+
+
 
 The following endpoints also now include a `metadata.metrics` object on the result field after successful message consumption:
 

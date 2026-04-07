@@ -31,8 +31,8 @@ MyContainer.outbound = async (request, env, ctx) => {
 };
 ```
 
-:::note[TLS support coming soon]
-Containers currently only intercept HTTP traffic. HTTPS interception is coming soon. This will enable using Workers as a transparent proxy for credential injection.
+:::note[HTTP interception only]
+Containers only intercept HTTP traffic. HTTPS interception is not currently available.
 
 Even though this is just using HTTP, traffic to Workers is secure and runs on the same machine as the Container.
 If needed, you can also upgrade requests to TLS from the Worker itself.
@@ -176,7 +176,8 @@ The `Container` class will call these methods automatically when using the vario
 `wrangler dev` supports outbound interception. A sidecar process is spawned inside the container's network namespace. It applies `TPROXY` rules to route matching traffic to the local Workerd instance, mirroring production behavior.
 
 :::caution
-Hostnames that do not resolve via DNS do not work in local development yet. These hostnames do work in production. This limitation will be corrected in a future update.
+Hostnames that do not resolve via DNS do not work in local development. These hostnames do
+work in production.
 :::
 
 ## Related resources

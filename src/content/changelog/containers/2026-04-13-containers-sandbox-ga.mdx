@@ -1,0 +1,21 @@
+---
+title: Containers and Sandbox SDK are now generally available
+description: Containers and Sandbox SDK are now generally available on the Workers Paid plan.
+products:
+  - containers
+date: 2026-04-13
+---
+
+[Containers](/containers/) and [Sandbox SDK](/sandbox/) are now generally available on the [Workers Paid plan](/workers/platform/pricing/). Use Containers when you want full control over your image and runtime, or use Sandbox SDK when you want higher-level APIs for command execution, file management, preview URLs, and AI code execution workflows.
+
+Since the original [Sandboxes beta launch](/changelog/post/2025-06-24-announcing-sandboxes/), Cloudflare has added:
+
+- [Backup and restore APIs](/changelog/post/2026-02-23-sandbox-backup-restore-api/) to snapshot a workspace and quickly restore an agent's coding session without repeating expensive setup steps.
+- [Interactive PTY terminals](/changelog/post/2026-02-09-pty-terminal-support/) for real browser-based terminal access with multiple isolated shells per sandbox.
+- [Persistent code interpreters](/changelog/post/2025-08-05-sandbox-sdk-major-update/) for Python, JavaScript, and TypeScript, with rich structured outputs.
+- [Background process control and live preview URLs](/changelog/post/2025-08-05-sandbox-sdk-major-update/) so agents can run long-lived services and verify in-flight changes.
+- [Real-time filesystem watching](/changelog/post/2026-03-03-sandbox-watch-file-events/) so apps and agents can react immediately to file changes inside a sandbox.
+- [Outbound Workers support](/changelog/post/2026-03-26-outbound-workers/) so bindings and authentication logic can stay in the Worker runtime instead of inside the sandbox itself.
+- [Active-CPU pricing](/changelog/post/2025-11-21-new-cpu-pricing/) and [higher resource limits](/changelog/post/2026-02-25-higher-container-resource-limits/) so you can run larger fleets of agents without paying for idle CPU.
+
+For more information, refer to [Containers](/containers/) and [Sandbox SDK](/sandbox/).

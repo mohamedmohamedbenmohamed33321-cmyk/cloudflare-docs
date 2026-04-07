@@ -34,8 +34,8 @@ return fetch(request);
 ````
 </TypeScriptExample>
 
-:::note[TLS support coming soon]
-Sandboxes currently only intercept HTTP traffic. HTTPS interception is coming soon. This will enable using Workers as a transparent proxy for credential injection.
+:::note[HTTP interception only]
+Sandboxes only intercept HTTP traffic. HTTPS interception is not currently available.
 
 Even though this is just using HTTP, traffic to Workers is secure and runs on the same machine as the Sandbox.
 If needed, you can also upgrade requests to TLS from the Worker itself.
@@ -171,7 +171,8 @@ export default {
 `wrangler dev` supports outbound interception. A sidecar process is spawned inside the sandbox's network namespace. It applies `TPROXY` rules to route matching traffic to the local Workerd instance, mirroring production behavior.
 
 :::caution
-Hostnames that do not resolve via DNS do not work in local development yet. These hostnames do work in production. This limitation will be corrected in a future update.
+Hostnames that do not resolve via DNS do not work in local development. These hostnames do
+work in production.
 :::
 
 ## Related resources
@@ -179,10 +180,3 @@ Hostnames that do not resolve via DNS do not work in local development yet. Thes
 - [Handle outbound traffic (Containers)](/containers/platform-details/outbound-traffic/) — Container SDK API for outbound handlers
 - [Sandbox options](/sandbox/configuration/sandbox-options/) — Configure sandbox behavior
 - [Environment variables](/sandbox/configuration/environment-variables/) — Configure secrets and environment variables
-
-## Related resources
-
-- [Handle outbound traffic (Containers)](/containers/platform-details/outbound-traffic/) — Container SDK API for outbound handlers
-- [Sandbox options](/sandbox/configuration/sandbox-options/) — Configure sandbox behavior
-- [Environment variables](/sandbox/configuration/environment-variables/) — Configure secrets and environment variables
-

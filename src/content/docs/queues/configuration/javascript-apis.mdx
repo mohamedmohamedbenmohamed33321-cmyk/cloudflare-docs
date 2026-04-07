@@ -100,7 +100,7 @@ interface Queue<Body = unknown> {
 
 
 
-* `send(bodyunknown, options?{ contentType?: QueuesContentType })` <Type text="Promise<QueueSendResult>" />
+* `send(body: unknown, options?: {contentType?: QueuesContentType }) />
 
   * Sends a message to the Queue. The body can be any type supported by the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#supported_types), as long as its size is less than 128 KB.
   * When the promise resolves, the message is confirmed to be written to disk.

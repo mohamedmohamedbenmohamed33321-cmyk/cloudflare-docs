@@ -30,7 +30,7 @@ const {
         metrics: {
          backlogCount: number,
          backlogBytes: number,
-         oldestMessageTimestamp: number,
+         oldestMessageTimestamp: Date | undefined,
         }
     }
 } = await env.QUEUE.send(...)

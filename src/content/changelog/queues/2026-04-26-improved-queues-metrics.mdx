@@ -6,7 +6,7 @@ products:
 date: 2026-03-26
 ---
 
-You can now access realtime backlog size (in count & bytes) and `oldest_message_timestamp_ms`, useful for calculating backlog lag, via the dashboard, [Queues REST API](/api/resources/queues/methods/create/), and [Javascript API](/queues/configuration/javascript-apis/).
+You can now access realtime backlog size (in count & bytes) and `oldest_message_timestamp_ms`, useful for calculating backlog lag via the [Queues REST API](/api/resources/queues/methods/create/), and [Javascript API](/queues/configuration/javascript-apis/). You can also access realtime backlog lag in the Cloudflare dashboard on your queue's [Metrics tab](https://dash.cloudflare.com/?to=/:account/workers/queues/:queueId/metric).
 
 ### REST API
 
@@ -33,9 +33,5 @@ const {
     }
 } = await env.QUEUE.send(...)
 ```
-
-### Dashboard
-
-Realtime backlog metrics are available in the Cloudflare dashboard by selecting the **Metrics** tab [for your queue](https://dash.cloudflare.com/?to=/:account/workers/queues/:queueId/metric).
 
 You can also query these fields via the [GraphQL Analytics API](/analytics/graphql-api/). For more information, refer to [Metrics](/queues/observability/metrics/).

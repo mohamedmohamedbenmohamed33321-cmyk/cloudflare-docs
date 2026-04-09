@@ -1,0 +1,117 @@
+---
+pcx_content_type: how-to
+title: Get started
+tags:
+  - Private networks
+  - Mesh
+sidebar:
+  order: 2
+head:
+  - tag: title
+    content: Set up your first Cloudflare Mesh node
+---
+
+import { Details, Tabs, TabItem } from "~/components";
+
+This guide walks you through creating your first Cloudflare Mesh node using the dashboard. The setup wizard handles provisioning automatically, including device enrollment and device profile configuration.
+
+## Prerequisites
+
+- A Cloudflare account.
+- A Linux server (Debian/Ubuntu or RedHat/CentOS) where you want to install the Mesh node.
+- Root or sudo access on the server.
+
+<Details header="Supported Linux distributions">
+
+| Distribution | Architectures |
+|---|---|
+| Debian / Ubuntu (`.deb`) | amd64, arm64, armhf |
+| RedHat / CentOS / Fedora (`.rpm`) | x86_64, aarch64 |
+
+</Details>
+
+## 1. Create a Mesh node
+
+1. In the [Cloudflare dashboard](https://dash.cloudflare.com/?to=/:account/mesh), go to **Networking** > **Mesh**.
+2. Select **Add a node**.
+3. Enter a name for your node (for example, `web-server` or `staging-db`).
+4. Follow the wizard steps. If this is your first node, the wizard will:
+   - Set up device enrollment permissions for your account.
+   - Create a device profile configured for Mesh networking.
+   - Provision the necessary connectivity settings.
+
+## 2. Install the Cloudflare One agent
+
+After the wizard completes, you will see install commands for your node. Run these on your Linux server:
+
+<Tabs>
+<TabItem label="Debian / Ubuntu">
+
+1. Add the Cloudflare package repository and install the agent:
+
+   ```sh
+   curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+   echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+   sudo apt-get update && sudo apt-get install -y cloudflare-warp
+   ```
+
+2. Register and connect using your node token:
+
+   ```sh
+   sudo warp-cli connector new <TOKEN> && sudo warp-cli connect
+   ```
+
+   Replace `<TOKEN>` with the token shown in the dashboard.
+
+</TabItem>
+<TabItem label="RedHat / CentOS">
+
+1. Add the Cloudflare package repository and install the agent:
+
+   ```sh
+   sudo rpm -ivh https://pkg.cloudflareclient.com/cloudflare-release-el8.rpm
+   sudo yum install -y cloudflare-warp
+   ```
+
+2. Register and connect using your node token:
+
+   ```sh
+   sudo warp-cli connector new <TOKEN> && sudo warp-cli connect
+   ```
+
+   Replace `<TOKEN>` with the token shown in the dashboard.
+
+</TabItem>
+</Tabs>
+
+## 3. Verify the connection
+
+After installation, your node should appear as **Online** on the Mesh overview page. You can also verify from the server:
+
+```sh
+warp-cli status
+```
+
+The output should show `Status update: Connected` and display the node's Mesh IP.
+
+## What the wizard configures
+
+When you create your first Mesh node, the setup wizard automatically provisions several Cloudflare One settings:
+
+| Setting | What it does |
+|---|---|
+| **Device enrollment** | Allows you (or your organization) to enroll devices into your Cloudflare One account. |
+| **Device profile** | Creates a profile configured for Mesh networking using Include mode, so only Mesh traffic routes through Cloudflare. This prevents disrupting existing network connectivity on your server. |
+| **Connectivity settings** | Enables Mesh connectivity and the required traffic proxying (TCP, UDP, ICMP) for Mesh communication. |
+
+You can review and modify these settings in the [Zero Trust dashboard](https://one.dash.cloudflare.com):
+
+- **Device enrollment**: **Team & Resources** > **Devices** > **Management**
+- **Device profiles**: **Team & Resources** > **Devices** > **Profiles**
+- **Connectivity**: **Team & Resources** > **Devices** > **Management** (Mesh connectivity toggle), **Traffic Policies** > **Traffic Settings** (proxy settings)
+
+## Next steps
+
+- [Connect client devices](/cloudflare-one/networks/connectors/cloudflare-mesh/client-devices/) to reach your Mesh node from laptops and phones.
+- [Add routes](/cloudflare-one/networks/connectors/cloudflare-mesh/routes/) to make an entire subnet behind your node reachable.
+- [Enable high availability](/cloudflare-one/networks/connectors/cloudflare-mesh/high-availability/) for production deployments.

@@ -1,0 +1,93 @@
+---
+pcx_content_type: how-to
+title: Connect client devices
+tags:
+  - Private networks
+  - Mesh
+sidebar:
+  order: 3
+head:
+  - tag: title
+    content: Connect client devices to Cloudflare Mesh
+---
+
+import { Details } from "~/components";
+
+Once you have at least one [Mesh node](/cloudflare-one/networks/connectors/cloudflare-mesh/get-started/) online, you can connect client devices (laptops, phones, desktops) to your Mesh network. Client devices run the Cloudflare One Client and receive a [Mesh IP](/cloudflare-one/networks/connectors/cloudflare-mesh/#mesh-ips), allowing them to reach any Mesh node or other enrolled device.
+
+This is how your team members, coding agents, and AI assistants access private services on your Mesh.
+
+## Prerequisites
+
+- At least one [Mesh node](/cloudflare-one/networks/connectors/cloudflare-mesh/get-started/) is online.
+- [Device enrollment permissions](/cloudflare-one/team-and-resources/devices/cloudflare-one-client/deployment/device-enrollment/) are configured. If you used the Mesh setup wizard, this was handled automatically.
+
+## 1. Install the Cloudflare One Client
+
+Download and install the Cloudflare One Client on each device:
+
+| Platform | Download |
+|---|---|
+| Windows | [Download](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/download-warp/#windows) |
+| macOS | [Download](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/download-warp/#macos) |
+| Linux | [Download](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/download-warp/#linux) |
+| iOS | [Download](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/download-warp/#ios) |
+| Android | [Download](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/download-warp/#android) |
+
+## 2. Enroll the device
+
+1. Open the Cloudflare One Client on the device.
+2. Go to **Settings** > **Account** > **Login to Cloudflare Zero Trust**.
+3. Enter your team name (the same one used when setting up your Mesh node).
+4. Authenticate using your configured enrollment method (One-time PIN by default).
+
+After enrollment, the device receives a Mesh IP and can communicate with all other participants on your Mesh network.
+
+## 3. Verify connectivity
+
+Once enrolled, test connectivity to a Mesh node:
+
+```sh
+ping <MESH-NODE-IP>
+```
+
+Replace `<MESH-NODE-IP>` with the Mesh IP of your node (visible on the Mesh overview page in the dashboard, for example `100.96.0.1`).
+
+You can also SSH into the node, connect to a database, or make API calls to services running on it, all over the Mesh IP.
+
+## Split Tunnel configuration
+
+For client devices to reach Mesh IPs, the Mesh IP range must route through Cloudflare. This depends on your [Split Tunnel mode](/cloudflare-one/team-and-resources/devices/cloudflare-one-client/configure/route-traffic/split-tunnels/):
+
+### Exclude mode (default)
+
+In Exclude mode, the CGNAT range (`100.64.0.0/10`) is excluded from Cloudflare routing by default. You must remove the CGNAT range from your exclude list so that Mesh IP traffic routes through Cloudflare.
+
+If you used the Mesh setup wizard, the wizard creates a device profile in **Include mode** for Mesh nodes, but your client devices may use the default profile with Exclude mode. Verify that `100.96.0.0/12` (or your custom device IP range) is not in the exclude list.
+
+For detailed guidance on which IP ranges to include or exclude, refer to [Reserved IP addresses](/cloudflare-one/networks/routes/reserved-ips/).
+
+### Include mode
+
+In Include mode, add the following to your include list:
+
+- `100.96.0.0/12` (device IPs / Mesh IPs)
+- `100.80.0.0/16` and `2606:4700:0cf1:4000::/64` (hostname routing, if used)
+- Any CIDR routes you have [configured for your Mesh nodes](/cloudflare-one/networks/connectors/cloudflare-mesh/routes/)
+
+## Firewall considerations
+
+Verify that your local firewall allows traffic from Mesh IPs. Some operating systems block inbound traffic from the Mesh IP range by default:
+
+- **Windows**: Windows Firewall blocks inbound traffic from `100.96.0.0/12` by default. Add a firewall rule that allows incoming requests from `100.96.0.0/12` for the desired protocols and ports.
+- **macOS / Linux**: Most configurations allow this traffic by default. If you have custom firewall rules, ensure `100.96.0.0/12` is permitted.
+
+## What devices can reach
+
+Once connected, a client device can:
+
+- Reach any online Mesh node by its Mesh IP.
+- Reach any other enrolled client device by its Mesh IP.
+- Access services on subnets behind Mesh nodes that have [CIDR routes](/cloudflare-one/networks/connectors/cloudflare-mesh/routes/) configured.
+
+All traffic is subject to your [Gateway network policies](/cloudflare-one/traffic-policies/network-policies/), allowing you to restrict which users and devices can reach specific resources.
